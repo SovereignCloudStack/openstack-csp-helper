@@ -88,7 +88,6 @@ project-id={{ include "auth_project_id" . }}
 
 [LoadBalancer]
 enabled={{ not (.Values.yawol | default false) }}
-use-octavia={{ not (.Values.yawol | default false) }}
 manage-security-groups=true
 enable-ingress-hostname=true
 create-monitor=true
