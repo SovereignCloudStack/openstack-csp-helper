@@ -36,6 +36,10 @@ Checks whether we have a regular clouds.yaml or one with application credentials
 {{ get (get (get .Values.clouds (include "cloud_name" .)) "auth") "user_domain_name" }}
 {{- end }}
 
+{{- define "auth_domain_name" -}}
+{{ get (get (get .Values.clouds (include "cloud_name" .)) "auth") "domain_name" }}
+{{- end }}
+
 {{- define "auth_application_credential_id" -}}
 {{ get (get (get .Values.clouds (include "cloud_name" .)) "auth") "application_credential_id" }}
 {{- end }}
@@ -49,12 +53,12 @@ Checks whether we have a regular clouds.yaml or one with application credentials
 {{- end }}
 
 {{- define "isAppCredential" -}}
-{{- if and 
-    ( include "auth_username" .) 
+{{- if and
+    ( include "auth_username" .)
     (not ( include "auth_application_credential_id" . ))
 -}}
-{{- else if and 
-    ( not ( include "auth_username" . )) 
+{{- else if and
+    ( not ( include "auth_username" . ))
     ( include "auth_application_credential_id" . )
 -}}
 true
@@ -77,12 +81,15 @@ application-credential-secret={{ include "auth_application_credential_secret" . 
 username={{ include "auth_username" . }}
 password={{ include "auth_password" . }}
 user-domain-name={{ include "auth_user_domain_name" . }}
+domain-name={{ default (include "auth_user_domain_name" .) (include "auth_domain_name" .) }}
 tenant-id={{ include "auth_project_id" . }}
+project-id={{ include "auth_project_id" . }}
 {{ end }}
 
 [LoadBalancer]
+enabled={{ not (.Values.yawol | default false) }}
+use-octavia={{ not (.Values.yawol | default false) }}
 manage-security-groups=true
-use-octavia=true
 enable-ingress-hostname=true
 create-monitor=true
 {{- end }}
@@ -96,6 +103,9 @@ Templates the secret that contains cloud.conf as needed by the openstack CCM
 apiVersion: v1
 data:
   cloud.conf: {{ include "cloud.conf" . | b64enc }}
+{{- if .Values.yawol }}
+  cloudprovider.conf: {{ include "cloud.conf" . | b64enc }}
+{{- end }}
 kind: Secret
 metadata:
   name: cloud-config
