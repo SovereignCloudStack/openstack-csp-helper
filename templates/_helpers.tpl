@@ -87,7 +87,6 @@ project-id={{ include "auth_project_id" . }}
 {{ end }}
 
 [LoadBalancer]
-enabled={{ not (.Values.yawol | default false) }}
 manage-security-groups=true
 enable-ingress-hostname=true
 create-monitor=true
@@ -97,14 +96,13 @@ create-monitor=true
 
 {{/*
 Templates the secret that contains cloud.conf as needed by the openstack CCM
+cloudprovider.conf is needed by yawol
 */}}
 {{- define "cloud-config" -}}
 apiVersion: v1
 data:
   cloud.conf: {{ include "cloud.conf" . | b64enc }}
-{{- if .Values.yawol }}
   cloudprovider.conf: {{ include "cloud.conf" . | b64enc }}
-{{- end }}
 kind: Secret
 metadata:
   name: cloud-config
