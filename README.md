@@ -3,5 +3,3 @@ This chart can be used to create a new namespace and two secrets for the cluster
 ```
 helm upgrade -i <tenant>-credentials -n <tenant> --create-namespace https://github.com/SovereignCloudStack/openstack-csp-helper/releases/latest/download/openstack-csp-helper.tgz -f clouds.yaml
 ```
-
-If using the Wooctavia cluster stack, add `--set yawol=true` to the helm command.
