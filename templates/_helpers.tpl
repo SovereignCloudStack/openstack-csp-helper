@@ -74,6 +74,9 @@ Templates the cloud.conf as needed by the openstack CCM
 [Global]
 auth-url={{ include "auth_auth_url" . }}
 region={{ include "region_name" . }}
+{{- if .Values.cacert }}
+ca-file=/etc/config/cacert
+{{- end }}
 {{ if include "isAppCredential" . }}
 application-credential-id={{ include "auth_application_credential_id" . }}
 application-credential-secret={{ include "auth_application_credential_secret" . }}
@@ -103,6 +106,9 @@ apiVersion: v1
 data:
   cloud.conf: {{ include "cloud.conf" . | b64enc }}
   cloudprovider.conf: {{ include "cloud.conf" . | b64enc }}
+  {{- if .Values.cacert }}
+  cacert: {{ .Values.cacert | b64enc }}
+  {{- end }}
 kind: Secret
 metadata:
   name: cloud-config
