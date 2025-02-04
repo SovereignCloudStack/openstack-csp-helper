@@ -5,3 +5,9 @@ helm upgrade -i <tenant>-credentials -n <tenant> --create-namespace https://gith
 ```
 
 If OpenStack API is protected by the certificate issued by custom CA, add `--set cacert="$(cat /path/to/cacert)"` to the helm command.
+
+If you choose to use clouds.yaml with application credentials (auth_type: `v3applicationcredential`), it is the preferred and more secure option.
+
+If you opt to use clouds.yaml with password authentication (auth_type: `v3password`), that is also acceptable, but:
+- Ensure that `project_id` is set, `project_name` works only for CAPO, not for OCCM!
+- Using `project_id` guarantees that both CAPO and OCCM function correctly with `v3password` authentication.
