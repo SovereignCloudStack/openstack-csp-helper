@@ -4,6 +4,8 @@ This chart can be used to create a new namespace and two secrets for the cluster
 helm upgrade -i <tenant>-credentials -n <tenant> --create-namespace https://github.com/SovereignCloudStack/openstack-csp-helper/releases/latest/download/openstack-csp-helper.tgz -f clouds.yaml
 ```
 
+If you want to use OVN provider OpenStack Octavia `--set octavia_ovn=true` to the helm command.
+
 If OpenStack API is protected by the certificate issued by custom CA, add `--set cacert="$(cat /path/to/cacert)"` to the helm command.
 
 If you choose to use clouds.yaml with application credentials (auth_type: `v3applicationcredential`), it is the preferred and more secure option.

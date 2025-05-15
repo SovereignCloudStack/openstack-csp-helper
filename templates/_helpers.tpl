@@ -93,6 +93,10 @@ project-id={{ include "auth_project_id" . }}
 manage-security-groups=true
 enable-ingress-hostname=true
 create-monitor=true
+{{- if .Values.octavia_ovn }}
+lb-provider=ovn
+lb-method=SOURCE_IP_PORT
+{{- end }}
 {{- end }}
 
 
