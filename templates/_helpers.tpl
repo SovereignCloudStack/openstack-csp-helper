@@ -73,7 +73,9 @@ Templates the cloud.conf as needed by the openstack CCM
 {{- define "cloud.conf" -}}
 [Global]
 auth-url={{ include "auth_auth_url" . }}
+{{- if include "region_name" . }}
 region={{ include "region_name" . }}
+{{- end }}
 {{- if .Values.cacert }}
 ca-file=/etc/config/cacert
 {{- end }}
