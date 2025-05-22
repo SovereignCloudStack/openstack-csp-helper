@@ -4,12 +4,12 @@ This chart can be used to create a new namespace and two secrets for the cluster
 helm upgrade -i <tenant>-credentials -n <tenant> --create-namespace https://github.com/SovereignCloudStack/openstack-csp-helper/releases/latest/download/openstack-csp-helper.tgz -f clouds.yaml
 ```
 
-If you want to use OVN provider OpenStack Octavia `--set octavia_ovn=true` to the helm command.
+If you want to make the OVN Octavia LB provider the default for OCCM, pass `--set octavia_ovn=true` to the helm command.
 
 If OpenStack API is protected by the certificate issued by custom CA, add `--set cacert="$(cat /path/to/cacert)"` to the helm command.
 
-If you choose to use clouds.yaml with application credentials (auth_type: `v3applicationcredential`), it is the preferred and more secure option.
+It is recommended to use application credentials in `clouds.yaml` (`auth_type: v3applicationcredential`), it is the preferred and more secure option.
 
-If you opt to use clouds.yaml with password authentication (auth_type: `v3password`), that is also acceptable, but:
-- Ensure that `project_id` is set, `project_name` works only for CAPO, not for OCCM!
+If you opt to use clouds.yaml with password authentication (`auth_type: v3password`, default), that is also acceptable, but:
+- Ensure that `project_id` is set, `project_name` (with `project_domain_name`) works only for CAPO, not for OCCM!
 - Using `project_id` guarantees that both CAPO and OCCM function correctly with `v3password` authentication.
